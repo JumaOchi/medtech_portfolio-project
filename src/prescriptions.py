@@ -73,7 +73,7 @@ def get_bookmark(id):
     prescriptions = Prescriptions.query.filter_by(user_id=current_user, id=id).first()
 
     if not prescriptions:
-        return jsonify({'message': 'Item not found'}), 404
+        return jsonify({'message': 'prescription not found'}), 404
 
     return jsonify({
         'id': prescriptions.id,
