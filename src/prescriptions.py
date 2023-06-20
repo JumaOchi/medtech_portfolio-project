@@ -67,7 +67,7 @@ def med_prescriptions():
 
 @prescriptions.get("/<int:id>")
 @jwt_required()
-def get_bookmark(id):
+def get_prescription(id):
     current_user = get_jwt_identity()
 
     prescriptions = Prescriptions.query.filter_by(user_id=current_user, id=id).first()
@@ -128,3 +128,6 @@ def editprescriptions(id):
         'created_at': prescriptions.created_at,
         'updated_at': prescriptions.updated_at,
     }), 200
+
+
+

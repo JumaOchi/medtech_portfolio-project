@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 import os
 from src.auth import auth
 from src.prescriptions import prescriptions
@@ -29,5 +29,19 @@ def create_app(test_config=None):
     app.register_blueprint(auth)
     app.register_blueprint(prescriptions)
     app.register_blueprint(notifications)
+
+    @app.get('/<prescriptions>')
+    def redirect_to_prescription(prescriptions):
+        prescription=Prescription.query.filter_by(prescriptions=prescriptions).first_or_404()
+
+        if prescription:
+            prescription.visits = prescription.visits+1
+            db.session.commit()
+
+            return redirect(prescription.url)
+
+    @app.errorhandler(404)
+    def handle_404(e):
+        return jsonify({'error': 'Not found'}),404
 
     return app
